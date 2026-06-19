@@ -2,6 +2,8 @@
 
 Decentralized AI infrastructure for verifiable ecological stewardship, regenerative land use and agritourism.
 
+**First deployment site:** [Rio Madre](https://riomadre.com)
+
 ## Overview
 
 Proof of Regeneration is an open-source system for documenting and verifying ecological observations, restoration activities and regenerative land-management outcomes.
