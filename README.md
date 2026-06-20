@@ -1,6 +1,8 @@
 # Proof of Regeneration
 
-Decentralized AI infrastructure for verifiable ecological stewardship, regenerative land use and agritourism.
+An open-source land-accountability system for creating verifiable, human-reviewed records of ecological stewardship and regenerative land activity using decentralized AI infrastructure.
+
+Built for regenerative farms, conservation properties, retreat centers, and agritourism operators to show what was funded, what happened, and what changed over time.
 
 **First deployment site:** [Rio Madre](https://riomadre.com)
 
