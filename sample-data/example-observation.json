@@ -1,0 +1,110 @@
+{
+"schema_version": "0.1.0",
+"record_id": "rm-2026-0001",
+"record_type": "ecological_observation",
+"parent_record_id": null,
+"observation": {
+"observed_at": "2026-05-23T09:30:00-06:00",
+"category": "flora",
+"field_note": "A low-growing plant with compound leaves was observed along a humid, partially shaded forest edge. The leaflets appeared paired along the central stem. Identification remains unresolved from the available photograph.",
+"contributor_id": "rio-madre-steward-01",
+"habitat": "Regenerating forest edge near a humid understory zone.",
+"weather_context": "Recent rainfall; warm and humid conditions."
+},
+"location": {
+"site": "Rio Madre",
+"private_coordinates": null,
+"public_zone": "Regenerating forest edge",
+"public_precision": "zone",
+"sensitivity": "low",
+"sensitivity_reason": null
+},
+"evidence": {
+"images": [
+{
+"image_id": "rm-img-2026-0001",
+"file_name": "example-flora-observation.jpg",
+"media_type": "image/jpeg",
+"sha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+"captured_at": "2026-05-23T09:30:00-06:00",
+"metadata_removed": true,
+"visibility": "private",
+"alt_text": "Low-growing plant with compound leaves along a shaded regenerating forest edge."
+}
+],
+"source_note_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+"input_bundle_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+},
+"ai_analysis": {
+"status": "completed",
+"provisional_classification": "Plant appears broadly consistent with a Mimosa or related legume, but the available image is insufficient for species-level identification.",
+"classification_level": "genus",
+"visible_evidence": [
+"Compound leaf structure",
+"Multiple paired leaflets",
+"Low-growing habit",
+"Humid, partially shaded habitat"
+],
+"alternative_interpretations": [
+"Related member of the legume family",
+"Other compound-leaved understory plant"
+],
+"confidence": 0.64,
+"uncertainty": "No flowers, fruit, stem detail, thorns, or leaf-response behavior are visible. Species-level identification should not be treated as confirmed.",
+"human_review_priority": "medium",
+"location_sensitivity": "low",
+"recommended_follow_up": [
+"Photograph the full plant from above and from the side",
+"Capture the stem and any thorns",
+"Photograph flowers or fruit if present",
+"Observe whether the leaves close after touch"
+],
+"legal_or_responsibility_claim_detected": false
+},
+"inference": {
+"provider": "mock",
+"job_id": null,
+"model": "example-open-vision-language-model",
+"model_version": "not-yet-selected",
+"container_image": null,
+"container_digest": null,
+"prompt_version": "0.1.0",
+"started_at": "2026-05-23T10:00:00-06:00",
+"completed_at": "2026-05-23T10:00:04-06:00",
+"runtime_seconds": 4.2,
+"estimated_cost_usd": 0,
+"raw_output_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+},
+"review": {
+"status": "corrected",
+"reviewer_id": "rio-madre-steward-01",
+"reviewed_at": "2026-05-23T10:15:00-06:00",
+"final_interpretation": "The plant has compound leaves and appears consistent with a Mimosa or related legume. The photograph does not provide enough evidence for a confirmed genus or species identification. Additional photographs of the stem, flowers, fruit, and leaf response are required.",
+"corrections": [
+{
+"field": "ai_analysis.classification_level",
+"original_value": "genus",
+"corrected_value": "unresolved",
+"reason": "The available photograph does not show enough diagnostic detail to support a genus-level identification."
+},
+{
+"field": "ai_analysis.provisional_classification",
+"original_value": "Plant appears broadly consistent with a Mimosa or related legume.",
+"corrected_value": "Plant appears consistent with a Mimosa or related legume, but identification remains unresolved.",
+"reason": "The reviewed wording more clearly preserves uncertainty."
+}
+],
+"follow_up_required": true,
+"review_notes": "Do not publish a definitive taxonomic identification until additional diagnostic features are documented.",
+"reviewed_output_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+},
+"publication": {
+"status": "public",
+"image_visibility": "redacted",
+"location_visibility": "zone",
+"approved_for_permanent_storage": false,
+"public_summary": "A compound-leaved understory plant was observed along a regenerating forest edge at Rio Madre. Its form appears consistent with a Mimosa or related legume, but the available evidence is insufficient for confirmed identification. Follow-up photography is required."
+},
+"created_at": "2026-05-23T09:45:00-06:00",
+"updated_at": "2026-05-23T10:15:00-06:00"
+}
