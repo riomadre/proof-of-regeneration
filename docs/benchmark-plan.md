@@ -9,9 +9,11 @@ The benchmark is not intended to prove that AI can replace ecological expertise.
 It is intended to measure:
 
 * how consistently a model interprets field evidence;
+* whether outputs remain grounded in visible evidence;
 * whether outputs follow the required structure;
 * how often human correction is necessary;
 * where the model overstates certainty;
+* whether observer notes bias the model;
 * how much decentralized inference costs;
 * whether repeated jobs produce comparable results;
 * whether the system handles privacy and uncertainty responsibly.
@@ -20,7 +22,19 @@ Rio Madre in Costa Rica will provide the initial field dataset.
 
 ## Core Research Question
 
-Can decentralized vision-language inference produce sufficiently structured, cautious, reproducible, and auditable records to assist community conservation, regenerative agriculture, and land stewardship?
+**Can decentralized vision-language inference produce ecological and land-stewardship records that are sufficiently structured, cautious, reproducible, and useful for real-world human review?**
+
+## Supporting Questions
+
+The benchmark will also examine:
+
+1. Does a strict evidence-and-uncertainty prompt improve output quality compared with a general prompt?
+2. Does adding an observer note improve interpretation or bias the model toward the observer’s assumption?
+3. Can the model distinguish visible evidence from contextual claims?
+4. Are repeated decentralized jobs materially consistent?
+5. Does self-reported confidence correspond to human-review outcomes?
+6. What is the effective compute cost per human-approved record?
+7. How much reviewer time is required to turn model output into a usable record?
 
 ## Benchmark Objectives
 
@@ -28,12 +42,14 @@ The benchmark will assess:
 
 1. Technical reliability
 2. Structured-output quality
-3. Ecological interpretation quality
-4. Representation of uncertainty
-5. Human-review requirements
-6. Privacy and sensitivity classification
-7. Repeatability across inference runs
-8. Runtime and compute cost
+3. Evidence grounding
+4. Ecological interpretation quality
+5. Representation of uncertainty
+6. Human-review requirements
+7. Privacy and sensitivity classification
+8. Repeatability across inference runs
+9. Runtime and compute cost
+10. Operational usefulness
 
 ## Dataset Scope
 
@@ -55,7 +71,7 @@ The final number will depend on:
 | Wildlife, tracks, and signs             |          10–20 |
 | Watershed and landscape conditions      |          10–15 |
 | Restoration and agroforestry activities |          10–20 |
-| Human disturbance observations          |           5–10 |
+| Human-disturbance observations          |           5–10 |
 | Difficult, ambiguous, or control cases  |          10–15 |
 
 A single record may belong to more than one category, but the primary benchmark category should be identified clearly.
@@ -207,6 +223,130 @@ Examples:
 
 These cases will test whether the model admits uncertainty rather than fabricating detail.
 
+## Planned Experiments
+
+## Experiment A — Structured versus Unstructured Prompting
+
+Use the same fixed subset of records with:
+
+### General prompt
+
+A broad ecological-analysis instruction without a strict schema or explicit uncertainty requirements.
+
+### Proof of Regeneration prompt
+
+The structured prompt requiring:
+
+* visible evidence;
+* provisional classification;
+* alternatives;
+* uncertainty;
+* review priority;
+* location sensitivity;
+* follow-up;
+* JSON-only output.
+
+Compare:
+
+* valid JSON rate;
+* evidence-grounding score;
+* hallucinated-feature rate;
+* classification overreach;
+* uncertainty quality;
+* human correction rate;
+* follow-up usefulness.
+
+## Experiment B — Input Ablation
+
+For a fixed subset, compare:
+
+### Image only
+
+The model receives the image without the observer note.
+
+### Note only
+
+The model receives the observer note without the image.
+
+### Image plus note
+
+The model receives both.
+
+Measure:
+
+* classification quality;
+* evidence grounding;
+* confidence;
+* uncertainty;
+* correction rate;
+* contradiction rate;
+* observer-note influence.
+
+## Experiment C — Observer-Note Disagreement
+
+Use controlled notes that are:
+
+* broadly correct;
+* cautious;
+* incomplete;
+* incorrectly specific;
+* misleading.
+
+Evaluate whether the model:
+
+* challenges the note;
+* repeats it without evidence;
+* invents confirming features;
+* clearly separates image evidence from observer context.
+
+## Experiment D — Repeatability
+
+Select approximately 10 to 20 records.
+
+Process each record multiple times using:
+
+* the same model version;
+* the same prompt version;
+* the same schema;
+* the same inference settings;
+* separate Nosana jobs where possible.
+
+Compare:
+
+* classification level;
+* visible evidence;
+* confidence;
+* uncertainty;
+* review priority;
+* sensitivity classification;
+* recommended follow-up.
+
+## Experiment E — Longitudinal Stewardship Record
+
+Test at least one complete sequence:
+
+```text
+Baseline condition
+        ↓
+Documented activity
+        ↓
+Scheduled follow-up
+        ↓
+Later evidence
+        ↓
+Human-reviewed change record
+```
+
+Possible examples:
+
+* native-tree planting;
+* nursery transfer;
+* riverbank vegetation;
+* erosion condition;
+* agroforestry establishment.
+
+The experiment should demonstrate that activity documentation is not treated as proof of ecological success.
+
 ## Model Output Requirements
 
 Each inference should return schema-constrained JSON containing fields such as:
@@ -239,18 +379,18 @@ It should also be evaluated on whether it:
 For each record:
 
 1. Confirm image-use authorization.
-2. remove unnecessary metadata;
-3. assign an anonymized identifier;
-4. generalize or hide sensitive location data;
-5. prepare the original field note;
-6. add curator notes;
-7. assign a primary category;
-8. identify expected uncertainty;
-9. assign a sensitivity level.
+2. Remove unnecessary metadata.
+3. Assign an anonymized identifier.
+4. Generalize or hide sensitive location data.
+5. Prepare the original field note.
+6. Add curator notes.
+7. Assign a primary category.
+8. Identify expected uncertainty.
+9. Assign a sensitivity level.
 
 ### Step 2: Baseline Inference
 
-Process each record once using:
+Process each record using:
 
 * the selected model;
 * a fixed prompt version;
@@ -296,36 +436,21 @@ A reviewer should assess:
 * whether follow-up advice is useful;
 * whether the record can be approved, corrected, or rejected.
 
-### Step 5: Repeatability Testing
+### Step 5: Review Timing
 
-Select a representative subset of approximately 10 to 20 records.
+Record:
 
-Each selected record should be processed multiple times under the same documented settings.
-
-Where possible, repeatability testing should include:
-
-* separate Nosana jobs;
-* identical prompt version;
-* identical model version;
-* identical inference settings;
-* the same input bundle.
-
-Compare:
-
-* provisional classification;
-* visible evidence statements;
-* alternative interpretations;
-* confidence;
-* uncertainty;
-* review priority;
-* sensitivity classification;
-* recommended follow-up.
+* review start time;
+* review completion time;
+* review duration;
+* number of corrected fields;
+* correction severity;
+* whether expert knowledge was required;
+* whether follow-up evidence was requested.
 
 ## Technical Metrics
 
 ### Inference Success Rate
-
-Percentage of submitted jobs that return a usable response.
 
 ```text
 Successful inference jobs / Total submitted jobs
@@ -333,15 +458,11 @@ Successful inference jobs / Total submitted jobs
 
 ### Schema Validity Rate
 
-Percentage of outputs that pass schema validation without repair.
-
 ```text
 Valid first-pass outputs / Total completed outputs
 ```
 
 ### Repair Rate
-
-Percentage of outputs requiring a repair prompt or parsing intervention.
 
 ```text
 Repaired outputs / Total completed outputs
@@ -372,31 +493,37 @@ Report:
 * minimum;
 * maximum.
 
-### Estimated Cost Per Record
+### Estimated Cost per Inference
 
 ```text
-Total compute cost / Number of completed records
+Total compute cost / Number of completed inferences
 ```
 
-Costs should be reported transparently and identified as estimates where exact billing attribution is unavailable.
+### Estimated Cost per Approved Record
 
-## Quality Metrics
+```text
+Total compute cost / Number of human-approved records
+```
 
-### Human Approval Rate
+This metric accounts for failed, rejected, or unusable outputs.
 
-Percentage of outputs approved without substantive correction.
+## Evidence-Grounding Metrics
 
-### Correction Rate
+Each visible-evidence statement should be scored:
 
-Percentage approved only after human correction.
+* `2` — directly visible;
+* `1` — plausible but ambiguous;
+* `0` — unsupported or invented.
 
-### Rejection Rate
+### Evidence-Grounding Score
 
-Percentage judged unsuitable as an ecological or stewardship record.
+```text
+Total evidence points / Maximum possible evidence points
+```
 
 ### Hallucinated-Feature Rate
 
-Percentage of outputs claiming visible evidence not supported by the image.
+Percentage of outputs containing at least one unsupported visible-evidence claim.
 
 Examples include:
 
@@ -406,35 +533,61 @@ Examples include:
 * water conditions not visible;
 * human activity not visible.
 
+## Quality Metrics
+
+### Human Approval Rate
+
+Percentage approved without substantive correction.
+
+### Correction Rate
+
+Percentage approved only after correction.
+
+### Rejection Rate
+
+Percentage judged unsuitable as an ecological or stewardship record.
+
 ### Classification Overreach Rate
 
-Percentage of outputs giving a more specific classification than the evidence reasonably supports.
+Percentage assigning a more specific classification than the evidence supports.
 
-Example:
+### Uncertainty Quality
 
-* assigning a species where only genus or family-level interpretation is justified.
+Rate uncertainty as:
 
-### Uncertainty Adequacy
-
-Assess whether uncertainty language is:
-
+* strong;
 * adequate;
-* insufficient;
-* excessive;
-* missing.
+* weak;
+* misleading.
+
+Review whether the output:
+
+* identifies missing evidence;
+* avoids false precision;
+* proposes reasonable alternatives;
+* recommends meaningful follow-up;
+* matches image quality;
+* matches classification specificity.
 
 ### Follow-Up Usefulness
 
-Assess whether the recommended follow-up would meaningfully improve interpretation.
+Rate whether the recommendation would meaningfully improve interpretation.
 
-Examples:
+### Median Review Time
 
-* photograph flowers;
-* capture leaf underside;
-* record scale;
-* photograph tracks from directly above;
-* repeat after rainfall;
-* perform a survival check.
+Report the median time required to turn model output into an approved or corrected record.
+
+## Confidence Analysis
+
+Model-generated confidence is not treated as a calibrated probability.
+
+The benchmark will test:
+
+* confidence variation across repeated runs;
+* confidence on blurred or incomplete images;
+* confidence on incorrect or misleading observer notes;
+* confidence for outputs later corrected or rejected;
+* correlation between confidence and human-review outcome.
 
 ## Privacy and Safety Metrics
 
@@ -481,41 +634,27 @@ Degree to which repeated runs identify the same visible features.
 
 ### Confidence Variation
 
-Measure the range and standard deviation of confidence values across repeated runs.
+Measure range and standard deviation across runs.
 
 ### Review-Priority Agreement
 
-Percentage of repeated runs assigning the same human-review priority.
+Percentage of repeated runs assigning the same review priority.
 
 ### Contradiction Rate
 
 Percentage of repeated runs producing materially contradictory interpretations.
 
-## Human Review Scale
+## Human Review Outcomes
 
-Reviewers may use the following outcome labels:
+Use:
 
-### Approved
+* Approved
+* Approved with Minor Edits
+* Corrected
+* Rejected
+* Follow-Up Required
 
-The output is suitable with no substantive correction.
-
-### Approved with Minor Edits
-
-The interpretation is generally sound but requires wording, formatting, or caution adjustments.
-
-### Corrected
-
-The output contains meaningful classification, evidence, uncertainty, or privacy errors that require revision.
-
-### Rejected
-
-The output is unsuitable or misleading.
-
-### Follow-Up Required
-
-The available evidence is insufficient and further observation is necessary.
-
-## Severity of Model Errors
+## Error Severity
 
 ### Low Severity
 
@@ -529,7 +668,7 @@ The available evidence is insufficient and further observation is necessary.
 * incorrect category;
 * unsupported confidence;
 * poor follow-up recommendation;
-* meaningful but noncritical hallucination;
+* meaningful hallucination;
 * incorrect sensitivity level.
 
 ### High Severity
@@ -538,21 +677,7 @@ The available evidence is insufficient and further observation is necessary.
 * invented environmental condition;
 * exposure of sensitive location;
 * accusation of legal wrongdoing;
-* identification of an uninvolved person;
 * fabricated evidence supporting an environmental claim.
-
-## Prompt and Model Comparison
-
-If compute credits permit, compare a limited number of:
-
-* prompt versions;
-* output-schema strategies;
-* model sizes;
-* inference settings.
-
-Do not spend credits on broad model comparison before the complete workflow functions.
-
-Each comparison should use the same fixed subset of records.
 
 ## Compute-Efficiency Plan
 
@@ -561,9 +686,10 @@ Nosana credits should be used in controlled stages:
 1. one-image deployment test;
 2. small five-record validation batch;
 3. prompt and schema refinement;
-4. main benchmark batch;
-5. repeatability subset;
-6. final demonstration and contingency.
+4. baseline and ablation subset;
+5. main benchmark batch;
+6. repeatability subset;
+7. final demonstration and contingency.
 
 Deployments should use:
 
@@ -571,7 +697,7 @@ Deployments should use:
 * one replica;
 * finite container timeout;
 * manual shutdown when idle;
-* the lowest-cost GPU market capable of running the selected workload.
+* the lowest-cost GPU market capable of running the workload.
 
 ## Reporting Results
 
@@ -588,7 +714,11 @@ Benchmark results should include:
 * cost estimates;
 * validation rate;
 * human-review outcomes;
+* median review time;
 * hallucination examples;
+* evidence-grounding score;
+* ablation findings;
+* observer-note bias findings;
 * repeatability findings;
 * privacy failures;
 * known limitations.
@@ -596,21 +726,6 @@ Benchmark results should include:
 Results should not be presented only as a success story.
 
 Failures, corrections, and uncertainty are important project findings.
-
-## Public Benchmark Materials
-
-The public repository may include:
-
-* anonymized structured records;
-* redacted example images where authorized;
-* schema files;
-* benchmark scripts;
-* aggregate results;
-* selected failed outputs;
-* review methodology;
-* reproducibility instructions.
-
-Do not publicly include sensitive source evidence.
 
 ## Success Criteria
 
@@ -620,8 +735,10 @@ The initial benchmark will be considered successful if:
 * most outputs are valid structured JSON;
 * costs and latency are documented;
 * human corrections are measured;
+* review time is measured;
 * hallucinations are identified honestly;
 * repeated runs can be compared;
+* observer-note bias is tested;
 * privacy-sensitive records are handled cautiously;
 * the results provide useful guidance for future development.
 
