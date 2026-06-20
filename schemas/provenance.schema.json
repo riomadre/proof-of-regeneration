@@ -1,0 +1,854 @@
+{
+"$schema": "https://json-schema.org/draft/2020-12/schema",
+"$id": "https://github.com/riomadre/proof-of-regeneration/schemas/provenance.schema.json",
+"title": "Proof of Regeneration Provenance Manifest",
+"description": "Schema for recording the evidence chain, decentralized inference metadata, human review history, publication state, and verification hashes associated with a Proof of Regeneration record.",
+"type": "object",
+"additionalProperties": false,
+"required": [
+"schema_version",
+"manifest_id",
+"record_id",
+"created_at",
+"source",
+"inference",
+"validation",
+"review",
+"publication",
+"integrity"
+],
+"properties": {
+"schema_version": {
+"type": "string",
+"const": "0.1.0",
+"description": "Version of this provenance schema."
+},
+"manifest_id": {
+"type": "string",
+"pattern": "^[a-z0-9][a-z0-9-]{2,95}$",
+"description": "Unique lowercase identifier for the provenance manifest."
+},
+"record_id": {
+"type": "string",
+"pattern": "^[a-z0-9][a-z0-9-]{2,63}$",
+"description": "Identifier of the related observation or activity record."
+},
+"parent_manifest_id": {
+"type": [
+"string",
+"null"
+],
+"pattern": "^[a-z0-9][a-z0-9-]{2,95}$",
+"description": "Identifier of an earlier manifest when this version supersedes or follows another."
+},
+"manifest_version": {
+"type": "integer",
+"minimum": 1,
+"default": 1,
+"description": "Sequential version number for this manifest."
+},
+"created_at": {
+"type": "string",
+"format": "date-time"
+},
+"updated_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"source": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"input_bundle_hash",
+"field_note_hash",
+"evidence_files"
+],
+"properties": {
+"input_bundle_hash": {
+"$ref": "#/$defs/sha256"
+},
+"field_note_hash": {
+"$ref": "#/$defs/sha256"
+},
+"field_note_version": {
+"type": "string",
+"minLength": 1,
+"maxLength": 100,
+"default": "1"
+},
+"evidence_files": {
+"type": "array",
+"minItems": 1,
+"maxItems": 25,
+"items": {
+"$ref": "#/$defs/evidenceFile"
+}
+},
+"submitted_by": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 100,
+"description": "An anonymized or authorized contributor identifier."
+},
+"submitted_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"source_rights_confirmed": {
+"type": "boolean",
+"default": false
+},
+"source_rights_note": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 1000
+}
+}
+},
+"inference": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"status",
+"provider",
+"model",
+"prompt_version",
+"raw_output_hash"
+],
+"properties": {
+"status": {
+"type": "string",
+"enum": [
+"not_run",
+"queued",
+"running",
+"completed",
+"failed",
+"timed_out",
+"invalid_output"
+]
+},
+"provider": {
+"type": "string",
+"enum": [
+"mock",
+"nosana",
+"other"
+]
+},
+"job_id": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500
+},
+"deployment_id": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500
+},
+"node_or_market_reference": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500,
+"description": "Optional public-safe identifier for the execution environment or GPU market."
+},
+"model": {
+"type": "string",
+"minLength": 1,
+"maxLength": 500
+},
+"model_version": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500
+},
+"model_weights_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"container_image": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 1000
+},
+"container_digest": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500
+},
+"prompt_version": {
+"type": "string",
+"minLength": 1,
+"maxLength": 100
+},
+"prompt_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"schema_reference": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 1000,
+"description": "Repository path or URI of the output schema used for inference."
+},
+"parameters": {
+"type": "object",
+"additionalProperties": true,
+"description": "Documented inference parameters such as temperature, maximum tokens, or seed."
+},
+"started_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"completed_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"runtime_seconds": {
+"type": [
+"number",
+"null"
+],
+"minimum": 0
+},
+"estimated_cost_usd": {
+"type": [
+"number",
+"null"
+],
+"minimum": 0
+},
+"raw_output_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"raw_output_storage_reference": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 1000,
+"description": "Private or public-safe reference to the preserved raw output."
+},
+"error_code": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 200
+},
+"error_message": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 3000
+}
+}
+},
+"validation": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"status",
+"schema_version",
+"validated_at",
+"errors",
+"repair_attempted"
+],
+"properties": {
+"status": {
+"type": "string",
+"enum": [
+"not_run",
+"passed",
+"failed",
+"passed_after_repair"
+]
+},
+"schema_version": {
+"type": "string",
+"minLength": 1,
+"maxLength": 100
+},
+"validated_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"validator": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 250
+},
+"errors": {
+"type": "array",
+"maxItems": 100,
+"items": {
+"$ref": "#/$defs/validationError"
+}
+},
+"repair_attempted": {
+"type": "boolean"
+},
+"repair_prompt_version": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 100
+},
+"repaired_output_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+}
+}
+},
+"review": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"status",
+"reviewer_id",
+"reviewed_at",
+"corrections",
+"reviewed_output_hash"
+],
+"properties": {
+"status": {
+"type": "string",
+"enum": [
+"pending",
+"approved",
+"approved_with_minor_edits",
+"corrected",
+"rejected",
+"follow_up_required"
+]
+},
+"reviewer_id": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 100
+},
+"reviewer_role": {
+"type": [
+"string",
+"null"
+],
+"enum": [
+"land_steward",
+"field_observer",
+"ecologist",
+"researcher",
+"administrator",
+"other",
+null
+]
+},
+"reviewed_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"corrections": {
+"type": "array",
+"maxItems": 100,
+"items": {
+"$ref": "#/$defs/correction"
+}
+},
+"review_notes_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"reviewed_output_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"review_signature": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 2000,
+"description": "Optional digital signature or signed attestation."
+},
+"follow_up_required": {
+"type": "boolean",
+"default": false
+},
+"follow_up_record_ids": {
+"type": "array",
+"maxItems": 100,
+"uniqueItems": true,
+"items": {
+"type": "string",
+"pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+}
+}
+}
+},
+"publication": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"status",
+"approved_at",
+"public_record_hash",
+"permanent_storage"
+],
+"properties": {
+"status": {
+"type": "string",
+"enum": [
+"private",
+"restricted",
+"public",
+"archived",
+"rejected"
+]
+},
+"approved_by": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 100
+},
+"approved_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"redaction_applied": {
+"type": "boolean",
+"default": false
+},
+"redaction_note": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 2000
+},
+"public_record_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"public_url": {
+"type": [
+"string",
+"null"
+],
+"format": "uri"
+},
+"permanent_storage": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"approved",
+"status"
+],
+"properties": {
+"approved": {
+"type": "boolean"
+},
+"status": {
+"type": "string",
+"enum": [
+"not_planned",
+"pending",
+"stored",
+"failed"
+]
+},
+"provider": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 200
+},
+"transaction_id": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500
+},
+"stored_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+},
+"stored_manifest_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+}
+}
+}
+}
+},
+"integrity": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"algorithm",
+"canonicalization_method",
+"manifest_hash",
+"verification_status"
+],
+"properties": {
+"algorithm": {
+"type": "string",
+"const": "SHA-256"
+},
+"canonicalization_method": {
+"type": "string",
+"minLength": 1,
+"maxLength": 250,
+"description": "Method used to produce deterministic serialized content before hashing."
+},
+"manifest_hash": {
+"$ref": "#/$defs/sha256"
+},
+"signed_manifest_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+},
+"signature": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 4000
+},
+"signature_method": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 250
+},
+"verification_status": {
+"type": "string",
+"enum": [
+"not_verified",
+"verified",
+"verification_failed"
+]
+},
+"verified_at": {
+"type": [
+"string",
+"null"
+],
+"format": "date-time"
+}
+}
+},
+"audit_events": {
+"type": "array",
+"maxItems": 500,
+"items": {
+"$ref": "#/$defs/auditEvent"
+}
+}
+},
+"$defs": {
+"sha256": {
+"type": "string",
+"pattern": "^sha256:[a-f0-9]{64}$",
+"description": "SHA-256 digest prefixed with sha256:."
+},
+"evidenceFile": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"evidence_id",
+"media_type",
+"sha256",
+"visibility"
+],
+"properties": {
+"evidence_id": {
+"type": "string",
+"pattern": "^[a-z0-9][a-z0-9-]{2,63}$"
+},
+"file_name": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 500
+},
+"media_type": {
+"type": "string",
+"enum": [
+"image/jpeg",
+"image/png",
+"image/webp",
+"application/json",
+"text/plain",
+"text/csv"
+]
+},
+"sha256": {
+"$ref": "#/$defs/sha256"
+},
+"byte_size": {
+"type": [
+"integer",
+"null"
+],
+"minimum": 0
+},
+"storage_reference": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 1000
+},
+"visibility": {
+"type": "string",
+"enum": [
+"private",
+"restricted",
+"redacted",
+"public"
+]
+},
+"metadata_removed": {
+"type": "boolean",
+"default": false
+}
+}
+},
+"validationError": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"path",
+"message"
+],
+"properties": {
+"path": {
+"type": "string",
+"maxLength": 1000
+},
+"keyword": {
+"type": [
+"string",
+"null"
+],
+"maxLength": 200
+},
+"message": {
+"type": "string",
+"minLength": 1,
+"maxLength": 2000
+}
+}
+},
+"correction": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"field",
+"original_value",
+"corrected_value",
+"reason"
+],
+"properties": {
+"field": {
+"type": "string",
+"minLength": 1,
+"maxLength": 500
+},
+"original_value": {},
+"corrected_value": {},
+"reason": {
+"type": "string",
+"minLength": 1,
+"maxLength": 3000
+},
+"severity": {
+"type": "string",
+"enum": [
+"low",
+"medium",
+"high"
+],
+"default": "low"
+}
+}
+},
+"auditEvent": {
+"type": "object",
+"additionalProperties": false,
+"required": [
+"event_id",
+"event_type",
+"occurred_at",
+"actor_id"
+],
+"properties": {
+"event_id": {
+"type": "string",
+"pattern": "^[a-z0-9][a-z0-9-]{2,95}$"
+},
+"event_type": {
+"type": "string",
+"enum": [
+"record_created",
+"source_added",
+"inference_started",
+"inference_completed",
+"inference_failed",
+"validation_completed",
+"repair_attempted",
+"review_started",
+"review_completed",
+"record_corrected",
+"publication_changed",
+"record_archived",
+"manifest_verified",
+"permanent_storage_requested",
+"permanent_storage_completed"
+]
+},
+"occurred_at": {
+"type": "string",
+"format": "date-time"
+},
+"actor_id": {
+"type": "string",
+"minLength": 1,
+"maxLength": 100
+},
+"actor_type": {
+"type": "string",
+"enum": [
+"human",
+"system",
+"model",
+"external_service"
+],
+"default": "system"
+},
+"details": {
+"type": "object",
+"additionalProperties": true
+},
+"event_hash": {
+"oneOf": [
+{
+"$ref": "#/$defs/sha256"
+},
+{
+"type": "null"
+}
+]
+}
+}
+}
+}
+}
