@@ -1,0 +1,73 @@
+{
+"version": "0.1",
+"type": "container",
+"meta": {
+"trigger": "cli",
+"project": "proof-of-regeneration",
+"purpose": "ecological-observation-inference",
+"status": "planned-template"
+},
+"global": {
+"work_dir": "/app",
+"env": {
+"POR_SCHEMA_VERSION": "0.1.0",
+"POR_PROMPT_VERSION": "0.1.0",
+"POR_OUTPUT_DIRECTORY": "/nosana/outputs"
+}
+},
+"ops": [
+{
+"type": "container/create-volume",
+"id": "create-output-volume",
+"args": {
+"name": "proof-of-regeneration-output"
+}
+},
+{
+"type": "container/run",
+"id": "run-observation-inference",
+"args": {
+"image": "REPLACE_WITH_TESTED_CONTAINER_IMAGE",
+"cmd": [
+"/bin/sh",
+"-lc",
+"python /app/inference.py --input /nosana/inputs/observation.json --prompt /app/prompts/observation-v0.1.0.txt --schema /app/schemas/observation.schema.json --output /nosana/outputs/result.json"
+],
+"work_dir": "/app",
+"volumes": [
+{
+"name": "proof-of-regeneration-output",
+"dest": "/nosana/outputs"
+}
+],
+"env": {
+"POR_RECORD_ID": "REPLACE_WITH_RECORD_ID",
+"POR_INPUT_REFERENCE": "REPLACE_WITH_APPROVED_INPUT_REFERENCE",
+"POR_MODEL_NAME": "REPLACE_WITH_SELECTED_MODEL",
+"POR_MODEL_VERSION": "REPLACE_WITH_MODEL_VERSION"
+},
+"resources": {
+"gpu": true
+}
+}
+},
+{
+"type": "container/run",
+"id": "inspect-generated-output",
+"args": {
+"image": "alpine:3.20",
+"cmd": [
+"/bin/sh",
+"-lc",
+"test -f /nosana/outputs/result.json && cat /nosana/outputs/result.json"
+],
+"volumes": [
+{
+"name": "proof-of-regeneration-output",
+"dest": "/nosana/outputs"
+}
+]
+}
+}
+]
+}
