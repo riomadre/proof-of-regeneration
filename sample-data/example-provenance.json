@@ -1,0 +1,185 @@
+{
+"schema_version": "0.1.0",
+"manifest_id": "rm-prov-2026-0001",
+"record_id": "rm-2026-0001",
+"parent_manifest_id": null,
+"manifest_version": 1,
+"created_at": "2026-05-23T10:16:00-06:00",
+"updated_at": null,
+"source": {
+"input_bundle_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+"field_note_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+"field_note_version": "1",
+"evidence_files": [
+{
+"evidence_id": "rm-img-2026-0001",
+"file_name": "example-flora-observation.jpg",
+"media_type": "image/jpeg",
+"sha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+"byte_size": null,
+"storage_reference": "private-placeholder-reference",
+"visibility": "private",
+"metadata_removed": true
+}
+],
+"submitted_by": "rio-madre-steward-01",
+"submitted_at": "2026-05-23T09:45:00-06:00",
+"source_rights_confirmed": true,
+"source_rights_note": "Synthetic example record representing an authorized Rio Madre field observation."
+},
+"inference": {
+"status": "completed",
+"provider": "mock",
+"job_id": null,
+"deployment_id": null,
+"node_or_market_reference": null,
+"model": "example-open-vision-language-model",
+"model_version": "not-yet-selected",
+"model_weights_hash": null,
+"container_image": null,
+"container_digest": null,
+"prompt_version": "0.1.0",
+"prompt_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+"schema_reference": "schemas/observation.schema.json",
+"parameters": {
+"temperature": 0.1,
+"maximum_output_tokens": 1000,
+"structured_output": true
+},
+"started_at": "2026-05-23T10:00:00-06:00",
+"completed_at": "2026-05-23T10:00:04-06:00",
+"runtime_seconds": 4.2,
+"estimated_cost_usd": 0,
+"raw_output_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+"raw_output_storage_reference": "private-placeholder-output-reference",
+"error_code": null,
+"error_message": null
+},
+"validation": {
+"status": "passed",
+"schema_version": "0.1.0",
+"validated_at": "2026-05-23T10:00:05-06:00",
+"validator": "planned-json-schema-validator",
+"errors": [],
+"repair_attempted": false,
+"repair_prompt_version": null,
+"repaired_output_hash": null
+},
+"review": {
+"status": "corrected",
+"reviewer_id": "rio-madre-steward-01",
+"reviewer_role": "land_steward",
+"reviewed_at": "2026-05-23T10:15:00-06:00",
+"corrections": [
+{
+"field": "ai_analysis.classification_level",
+"original_value": "genus",
+"corrected_value": "unresolved",
+"reason": "The available photograph does not show enough diagnostic detail to support a genus-level identification.",
+"severity": "medium"
+},
+{
+"field": "ai_analysis.provisional_classification",
+"original_value": "Plant appears broadly consistent with a Mimosa or related legume.",
+"corrected_value": "Plant appears consistent with a Mimosa or related legume, but identification remains unresolved.",
+"reason": "The revised wording more clearly preserves uncertainty.",
+"severity": "low"
+}
+],
+"review_notes_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+"reviewed_output_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+"review_signature": null,
+"follow_up_required": true,
+"follow_up_record_ids": []
+},
+"publication": {
+"status": "public",
+"approved_by": "rio-madre-steward-01",
+"approved_at": "2026-05-23T10:16:00-06:00",
+"redaction_applied": true,
+"redaction_note": "Exact location and original source image remain private. The public record uses a generalized habitat zone.",
+"public_record_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+"public_url": null,
+"permanent_storage": {
+"approved": false,
+"status": "not_planned",
+"provider": null,
+"transaction_id": null,
+"stored_at": null,
+"stored_manifest_hash": null
+}
+},
+"integrity": {
+"algorithm": "SHA-256",
+"canonicalization_method": "Deterministic JSON serialization with lexicographically sorted object keys and UTF-8 encoding.",
+"manifest_hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+"signed_manifest_hash": null,
+"signature": null,
+"signature_method": null,
+"verification_status": "not_verified",
+"verified_at": null
+},
+"audit_events": [
+{
+"event_id": "rm-event-2026-0001",
+"event_type": "record_created",
+"occurred_at": "2026-05-23T09:45:00-06:00",
+"actor_id": "rio-madre-steward-01",
+"actor_type": "human",
+"details": {
+"record_id": "rm-2026-0001"
+},
+"event_hash": null
+},
+{
+"event_id": "rm-event-2026-0002",
+"event_type": "inference_started",
+"occurred_at": "2026-05-23T10:00:00-06:00",
+"actor_id": "mock-inference-provider",
+"actor_type": "system",
+"details": {
+"provider": "mock",
+"prompt_version": "0.1.0"
+},
+"event_hash": null
+},
+{
+"event_id": "rm-event-2026-0003",
+"event_type": "inference_completed",
+"occurred_at": "2026-05-23T10:00:04-06:00",
+"actor_id": "mock-inference-provider",
+"actor_type": "system",
+"details": {
+"runtime_seconds": 4.2,
+"validation_status": "passed"
+},
+"event_hash": null
+},
+{
+"event_id": "rm-event-2026-0004",
+"event_type": "review_completed",
+"occurred_at": "2026-05-23T10:15:00-06:00",
+"actor_id": "rio-madre-steward-01",
+"actor_type": "human",
+"details": {
+"review_status": "corrected",
+"correction_count": 2,
+"follow_up_required": true
+},
+"event_hash": null
+},
+{
+"event_id": "rm-event-2026-0005",
+"event_type": "publication_changed",
+"occurred_at": "2026-05-23T10:16:00-06:00",
+"actor_id": "rio-madre-steward-01",
+"actor_type": "human",
+"details": {
+"previous_status": "private",
+"new_status": "public",
+"redaction_applied": true
+},
+"event_hash": null
+}
+]
+}
