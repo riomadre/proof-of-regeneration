@@ -6,6 +6,54 @@ Built for regenerative farms, conservation properties, retreat centers, and agri
 
 **First intended field deployment:** [Rio Madre](https://riomadre.com), Costa Rica
 
+## Central Research Question
+
+**Can decentralized multimodal inference produce ecological and land-stewardship records that are structured, reproducible, cautious, and useful enough for real-world human review?**
+
+The project does not assume that decentralized AI is automatically more accurate, private, or trustworthy.
+
+Instead, it tests whether decentralized infrastructure can support:
+
+* portable containerized workloads;
+* reproducible deployment records;
+* transparent cost and runtime measurement;
+* repeatable inference experiments;
+* structured model outputs;
+* preserved human corrections;
+* auditable provenance.
+
+## Core Thesis
+
+The useful output of conservation AI is not merely an identification.
+
+It is a reviewable evidence chain.
+
+Most image-analysis systems optimize for:
+
+```text
+Image
+    ↓
+Answer
+```
+
+Proof of Regeneration is designed around:
+
+```text
+Field evidence
+        ↓
+Provisional interpretation
+        ↓
+Explicit uncertainty
+        ↓
+Human correction
+        ↓
+Provenance record
+        ↓
+Follow-up evidence
+```
+
+The system is intended to preserve not only the final interpretation, but also how that interpretation was produced, reviewed, corrected, and later updated.
+
 ## Overview
 
 Proof of Regeneration is an open-source system for documenting ecological observations, restoration activities, regenerative land use, and future visitor-supported stewardship through a transparent evidence and review workflow.
@@ -20,7 +68,7 @@ The system is designed to connect:
 * privacy and publication controls;
 * follow-up observations over time.
 
-Rio Madre, a eight-hectare conservation and agritourism landscape in Costa Rica, will serve as the first real-world test site.
+Rio Madre, a seven-hectare conservation and agritourism landscape in Costa Rica, will serve as the first real-world test site.
 
 The project is currently in the planning, schema-design, documentation, and technical-preparation stage.
 
@@ -51,7 +99,15 @@ The available evidence may not clearly show:
 * whether follow-up evidence exists;
 * whether an activity produced a measurable outcome.
 
-AI may help organize field evidence, but it may also hallucinate features, overstate confidence, confuse similar species, expose sensitive locations, or produce inconsistent results.
+AI may help organize field evidence, but it may also:
+
+* hallucinate visible features;
+* overstate confidence;
+* confuse similar species;
+* repeat an observer’s mistaken assumption;
+* expose sensitive locations;
+* produce inconsistent results;
+* generate valid-looking but unsupported conclusions.
 
 Proof of Regeneration is intended to make that process more transparent and auditable.
 
@@ -135,6 +191,65 @@ See:
 * [Initial observation prompt](nosana/prompts/observation-v0.1.0.txt)
 * [Planned job template](nosana/jobs/observation-job.json)
 
+## Planned Experiments
+
+The project will not evaluate Nosana inference in isolation.
+
+The benchmark will include controlled comparisons designed to determine whether the workflow itself improves record quality.
+
+### Structured versus unstructured prompting
+
+The same field records will be tested with:
+
+1. a general ecological-analysis prompt;
+2. the Proof of Regeneration evidence-and-uncertainty prompt.
+
+The comparison will measure:
+
+* valid JSON rate;
+* evidence-grounding quality;
+* hallucinated-feature rate;
+* classification overreach;
+* uncertainty quality;
+* human correction rate;
+* usefulness of follow-up recommendations.
+
+### Image and note ablation
+
+A fixed subset will be tested using:
+
+1. image only;
+2. observer note only;
+3. image plus observer note.
+
+This experiment will assess whether field notes improve interpretation or bias the model toward the observer’s assumption.
+
+### Observer-note disagreement
+
+Controlled records will include notes that are:
+
+* broadly correct;
+* tentative;
+* incomplete;
+* misleading;
+* incorrectly specific.
+
+The system will be evaluated on whether it separates visible evidence from observer interpretation or invents evidence that confirms the note.
+
+### Repeatability testing
+
+Identical inputs will be processed across repeated Nosana jobs.
+
+The project will compare:
+
+* classification level;
+* visible-evidence statements;
+* confidence;
+* uncertainty;
+* human-review priority;
+* location sensitivity;
+* recommended follow-up.
+
 ## Record Types
 
 The initial system is intended to support:
@@ -205,6 +320,30 @@ Preferred language includes:
 
 A structurally valid AI response may still be ecologically incorrect, unsafe to publish, or excessively confident.
 
+## Confidence Scores
+
+Model-generated confidence is treated as a comparative output signal, not as a statistically calibrated probability.
+
+A value such as `0.80` does not mean that the identification has an independently verified 80 percent probability of being correct.
+
+The benchmark will test:
+
+* whether confidence decreases for low-quality or incomplete images;
+* whether confidence remains stable across repeated runs;
+* whether high-confidence outputs still require correction;
+* whether observer notes create unjustified confidence;
+* whether confidence correlates with human-review outcomes.
+
+## Evidence Grounding
+
+Each model-generated visible-evidence statement may be reviewed using the following scale:
+
+* `2` — directly visible;
+* `1` — plausible but ambiguous;
+* `0` — unsupported or invented.
+
+The resulting evidence-grounding score will help distinguish outputs that merely sound credible from outputs that remain tied to the actual field evidence.
+
 ## Provenance
 
 Each completed record may generate a provenance manifest connecting:
@@ -225,7 +364,35 @@ Each completed record may generate a provenance manifest connecting:
 * publication state;
 * manifest-integrity hash.
 
-The purpose is to preserve how a record was created and changed rather than showing only the final interpretation.
+### What provenance can establish
+
+A provenance record may help establish that:
+
+* a specific file or record existed in a particular form;
+* a displayed output corresponds to a stored hash;
+* a model, prompt, and container version were recorded;
+* a human correction was preserved;
+* a record changed between versions.
+
+### What provenance cannot establish by itself
+
+A hash or manifest does not prove that:
+
+* the photograph was taken where claimed;
+* the timestamp is authentic;
+* the field note is truthful;
+* the subject was identified correctly;
+* an ecological outcome occurred;
+* a contributor had authority to make every claim.
+
+Proof of Regeneration distinguishes between:
+
+* integrity verification;
+* human review;
+* scientific validation;
+* field authenticity.
+
+These are related but not equivalent.
 
 See:
 
@@ -271,11 +438,14 @@ The benchmark will measure:
 * inference success rate;
 * JSON-schema validity;
 * latency;
-* estimated cost per record;
+* estimated cost per inference;
+* estimated cost per approved record;
 * human approval rate;
 * correction rate;
 * rejection rate;
+* review time;
 * hallucinated-feature rate;
+* evidence-grounding score;
 * classification overreach;
 * uncertainty quality;
 * privacy classification;
@@ -305,6 +475,36 @@ Potential records may include:
 * stewardship and educational activities.
 
 The project will begin with authorized, low-sensitivity records and generalized locations.
+
+## Longitudinal Stewardship Records
+
+Proof of Regeneration is designed to document change over time rather than isolated events.
+
+A complete stewardship sequence may include:
+
+```text
+Baseline condition
+        ↓
+Activity record
+        ↓
+Scheduled follow-up
+        ↓
+Later field evidence
+        ↓
+Human-reviewed change record
+```
+
+For example, a tree-planting image may establish that planting activity occurred.
+
+It does not prove:
+
+* survival;
+* restoration success;
+* carbon benefit;
+* habitat improvement;
+* biodiversity gain.
+
+Those claims require later evidence.
 
 ## Regenerative Agritourism
 
@@ -417,6 +617,7 @@ The project prioritizes:
 * working code over speculative features;
 * human review over automated certainty;
 * explicit uncertainty;
+* evidence grounding;
 * privacy protection;
 * preserved correction history;
 * reproducible infrastructure;
